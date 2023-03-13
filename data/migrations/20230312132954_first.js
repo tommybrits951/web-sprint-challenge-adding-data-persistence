@@ -13,6 +13,13 @@ exports.up = function(knex) {
     tbl.increments('resource_id')
     tbl.string('resource_name', 120).notNullable()
   })
+  .createTable('task', tbl => {
+    tbl.increments('task_id')
+    tbl.string('task_description', 400).notNullable()
+    tbl.string('task_notes', 400)
+    tbl.boolean('task_completed').defaultTo(0)
+    tbl.integer('project_id').unsigned().references('project_id').inTable('projects')
+  })
 };
 
 /**
@@ -21,6 +28,7 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
   return knex.schema
+  .dropTableIfExists('task')
   .dropTableIfExists('resources')
   .dropTableIfExists('projects')
 };
