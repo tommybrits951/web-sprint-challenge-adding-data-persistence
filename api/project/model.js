@@ -3,7 +3,8 @@ const db = require('../../data/dbConfig')
 
 
 async function getAll() {
-    return await db('projects')
+    const projects = await db('projects')
+    return projects;
 }
 
 async function getById(id) {
@@ -11,8 +12,13 @@ async function getById(id) {
     return project;
 }
 
-
+async function insert(project) {
+    const [id] = await db('projects').insert(project)
+    const proj = getById(id);
+    return proj
+}
 module.exports = {
     getAll,
-    getById
+    getById,
+    insert
 }
